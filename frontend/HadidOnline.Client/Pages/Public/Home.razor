@@ -1,0 +1,7 @@
+@page "/"
+<PageTitle>Hadid Online | النقل الفاخر الذكي</PageTitle>
+<section class="hero page-pad">
+    <div class="container hero-grid"><div><p class="eyebrow">منصة نقل مؤسسية عربية أولاً</p><h1>إدارة نقل سياحي ومؤسسي ومدرسي بتجربة فاخرة قابلة للتوسع.</h1><p>نحافظ على نفس هيكل تجربة React: موقع تسويقي، تدفق حجز واضح، لوحة إدارة ممتازة، وواجهة RTL مصممة لفرق التشغيل في المملكة.</p><div class="hero-actions"><a class="btn primary" href="/booking">ابدأ الحجز</a><a class="btn glass-btn" href="/services">استكشف الخدمات</a></div><div class="hero-kpis"><b>+50 شريك</b><b>24/7 دعم</b><b>99.8% التزام</b></div></div><div class="hero-card vehicle-visual float"><div class="fleet-illustration"><span></span><b>VIP</b></div><div class="dispatch-card"><strong>رحلة VIP #HO-2026</strong><span>سائق معين · مركبة جاهزة · تتبع مباشر</span></div></div></div>
+</section>
+<section class="container section"><div class="section-title"><p class="eyebrow">وحدات المنصة</p><h2>من تجربة العميل إلى مركز التشغيل</h2></div><div class="feature-grid">@foreach (var f in Features){<article class="feature-card"><span>@f.Icon</span><h3>@f.Title</h3><p>@f.Text</p></article>}</div></section>
+@code { private readonly (string Icon,string Title,string Text)[] Features=[("◆","نقل سياحي","رحلات سياحية خاصة، باقات للمجموعات، ومركبات فاخرة."),("◈","نقل الشركات","عقود شهرية وسنوية، فواتير وتقارير التزام."),("◇","نقل المدارس","مسارات آمنة، سائقون معتمدون، وجدولة يومية."),("▣","لوحة إدارة","حجوزات، عقود، أسطول، سائقون، رحلات وتقارير.")]; }

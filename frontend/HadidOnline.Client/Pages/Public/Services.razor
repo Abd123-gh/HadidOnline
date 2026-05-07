@@ -1,0 +1,3 @@
+@page "/services"
+<section class="subhero"><p class="eyebrow">خدماتنا</p><h1>حلول نقل متكاملة لكل قطاع</h1><p>حافظنا على تقسيم الخدمات الأساسي مع بطاقات واضحة ودعوات حجز مباشرة.</p></section><section class="container cards-3 section">@foreach(var s in ServicesList){<article class="feature-card"><span>@s.Icon</span><h3>@s.Title</h3><p>@s.Text</p><a class="link-btn" href="@s.Url">التفاصيل ←</a></article>}</section>
+@code{private readonly (string Icon,string Title,string Text,string Url)[] ServicesList=[("✦","النقل السياحي","جولات وباقات ومركبات VIP للمجموعات.","/tours"),("▰","نقل الشركات","عقود مؤسسية وفوترة وتقارير SLA.","/corporate"),("◉","النقل المدرسي","مسارات منظمة وسلامة عالية وإشراف يومي.","/school")];}

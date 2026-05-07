@@ -1,0 +1,28 @@
+@inherits LayoutComponentBase
+@inject AuthService Auth
+@inject NavigationManager Nav
+<ToastHost />
+<div class="admin-shell">
+    <aside class="@($"admin-sidebar {(_collapsed ? "collapsed" : string.Empty)}")">
+        <Logo />
+        <nav>
+            @foreach (var item in _items)
+            {
+                <NavLink href="@item.Url" Match="@(item.Url == "/admin" ? NavLinkMatch.All : NavLinkMatch.Prefix)"><span>@item.Icon</span><b>@item.Label</b></NavLink>
+            }
+        </nav>
+    </aside>
+    <section class="admin-main">
+        <header class="admin-topbar">
+            <button class="icon-btn" @onclick="() => _collapsed = !_collapsed">☰</button>
+            <div><strong>مركز التحكم التشغيلي</strong><small>إدارة الحجوزات والأسطول والعقود بنمط RTL</small></div>
+            <div class="topbar-actions"><ThemeToggle /><button class="btn danger" @onclick="Logout">خروج</button></div>
+        </header>
+        <article class="admin-content">@Body</article>
+    </section>
+</div>
+@code {
+    private bool _collapsed;
+    private readonly (string Label, string Url, string Icon)[] _items = [("لوحة المعلومات", "/admin", "◈"), ("الحجوزات", "/admin/bookings", "▣"), ("العقود", "/admin/contracts", "▤"), ("العملاء", "/admin/clients", "◉"), ("السائقون", "/admin/drivers", "◍"), ("الرحلات", "/admin/trips", "◇"), ("الأسطول", "/admin/fleet", "▰"), ("التقارير", "/admin/reports", "▥"), ("الفواتير", "/admin/invoices", "◫"), ("الإعدادات", "/admin/settings", "⚙")];
+    private async Task Logout() { await Auth.LogoutAsync(); Nav.NavigateTo("/login"); }
+}

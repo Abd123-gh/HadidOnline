@@ -1,0 +1,28 @@
+@inherits LayoutComponentBase
+<ToastHost />
+<header class="public-header">
+    <div class="container nav-shell">
+        <Logo />
+        <button class="mobile-menu" @onclick="() => _open = !_open">☰</button>
+        <nav class="@($"public-nav {(_open ? "open" : string.Empty)}")">
+            @foreach (var item in _links)
+            {
+                <NavLink href="@item.Url" Match="@(item.Url == "/" ? NavLinkMatch.All : NavLinkMatch.Prefix)">@item.Label</NavLink>
+            }
+        </nav>
+        <div class="nav-actions"><ThemeToggle /><a class="btn ghost" href="/admin">لوحة الإدارة</a><a class="btn primary" href="/booking">احجز الآن</a></div>
+    </div>
+</header>
+<main>@Body</main>
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div><Logo /><p>نقل سياحي، مؤسسي ومدرسي بمعايير فاخرة، تتبع لحظي، عقود مرنة ودعم تشغيلي على مدار الساعة.</p></div>
+        <div><h4>الخدمات</h4><a href="/tours">النقل السياحي</a><a href="/corporate">نقل الشركات</a><a href="/school">النقل المدرسي</a><a href="/fleet">الأسطول</a></div>
+        <div><h4>تواصل</h4><span>الرياض، المملكة العربية السعودية</span><span>+966 55 000 0000</span><span>hello@hadid.online</span></div>
+    </div>
+    <div class="container footer-bottom">© @DateTime.UtcNow.Year Hadid Online. جميع الحقوق محفوظة.</div>
+</footer>
+@code {
+    private bool _open;
+    private readonly (string Label, string Url)[] _links = [("الرئيسية", "/"), ("من نحن", "/about"), ("الخدمات", "/services"), ("الأسطول", "/fleet"), ("الرحلات", "/tours"), ("الشركات", "/corporate"), ("المدارس", "/school"), ("الأسئلة", "/faq"), ("تواصل", "/contact")];
+}

@@ -1,0 +1,7 @@
+<div class="metric-card">
+    <span class="metric-icon">@Icon</span>
+    <small>@Label</small>
+    <strong>@Value</strong>
+    <em>@Trend</em>
+</div>
+@code { [Parameter] public string Label { get; set; } = ""; [Parameter] public string Value { get; set; } = ""; [Parameter] public string Icon { get; set; } = "◈"; [Parameter] public string Trend { get; set; } = ""; }

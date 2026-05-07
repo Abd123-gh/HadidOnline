@@ -1,0 +1,5 @@
+@page "/admin/invoices"
+@attribute [Authorize]
+@layout AdminLayout
+<AdminCrudPage TItem="InvoiceDto" TCreate="UpsertInvoiceDto" Endpoint="invoices" Title="إدارة الفواتير" Description="الفواتير والمدفوعات والضرائب وحالات التحصيل." CreateLabel="فاتورة جديدة" DefaultStatus="paid" Columns="_columns" CreateFactory="NewInvoice"><FormTemplate Context="m"><div class="form-grid"><input class="input" type="number" placeholder="المبلغ" @bind="m.Amount"/><input class="input" type="number" placeholder="الضريبة" @bind="m.TaxAmount"/><input class="input" type="number" placeholder="الإجمالي" @bind="m.TotalAmount"/><input class="input" type="date" @bind="m.DueDate"/></div></FormTemplate></AdminCrudPage>
+@code{private readonly List<AdminColumn<InvoiceDto>> _columns=[new("الفاتورة",x=>x.InvoiceNumber),new("المبلغ",x=>x.Amount.ToString("N0")),new("الضريبة",x=>x.TaxAmount.ToString("N0")),new("الإجمالي",x=>x.TotalAmount.ToString("N0")),new("الحالة",x=>x.Status),new("الاستحقاق",x=>x.DueDate?.ToString()??"—")]; private static UpsertInvoiceDto NewInvoice()=>new(null,null,null,0,0,0,"pending",DateOnly.FromDateTime(DateTime.Today.AddDays(15)),null,null,null);}

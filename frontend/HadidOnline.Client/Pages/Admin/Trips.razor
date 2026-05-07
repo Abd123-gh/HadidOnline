@@ -1,0 +1,5 @@
+@page "/admin/trips"
+@attribute [Authorize]
+@layout AdminLayout
+<AdminCrudPage TItem="TripDto" TCreate="UpsertTripDto" Endpoint="trips" Title="إدارة الرحلات" Description="التشغيل اليومي، تعيين المركبات والسائقين، وتتبع حالات الرحلة." CreateLabel="رحلة جديدة" DefaultStatus="in_progress" Columns="_columns" CreateFactory="NewTrip"><FormTemplate Context="m"><div class="form-grid"><input class="input" placeholder="الانطلاق" @bind="m.PickupLocation"/><input class="input" placeholder="الوجهة" @bind="m.Destination"/><input class="input" type="date" @bind="m.ScheduledDate"/><input class="input" type="time" @bind="m.ScheduledTime"/></div></FormTemplate></AdminCrudPage>
+@code{private readonly List<AdminColumn<TripDto>> _columns=[new("المسار",x=>$"{x.PickupLocation} ← {x.Destination}"),new("التاريخ",x=>x.ScheduledDate.ToString()),new("الوقت",x=>x.ScheduledTime.ToString()),new("الحالة",x=>x.Status),new("السائق",x=>x.DriverId?.ToString()[..8]??"—")]; private static UpsertTripDto NewTrip()=>new(null,null,null,null,null,"scheduled",DateOnly.FromDateTime(DateTime.Today.AddDays(1)),new TimeOnly(9,0),null,null,"","",1,null);}
