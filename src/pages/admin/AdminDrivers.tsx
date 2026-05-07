@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { supabase, type Driver } from '@/lib/supabase'
+import { apiDb, type Driver } from '@/lib/api'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
@@ -36,7 +36,7 @@ export default function AdminDrivers() {
 
   const load = () => {
     setLoading(true)
-    supabase.from('drivers').select('*').order('full_name').then(({ data }) => {
+    apiDb.from('drivers').select('*').order('full_name').then(({ data }) => {
       setDrivers(data ?? [])
       setFiltered(data ?? [])
       setLoading(false)
@@ -80,8 +80,8 @@ export default function AdminDrivers() {
       notes: form.notes || null,
     }
     const { error } = editId
-      ? await supabase.from('drivers').update(payload).eq('id', editId)
-      : await supabase.from('drivers').insert(payload)
+      ? await apiDb.from('drivers').update(payload).eq('id', editId)
+      : await apiDb.from('drivers').insert(payload)
     setSaving(false)
     if (error) { toast.error('حدث خطأ: ' + error.message); return }
     toast.success(editId ? 'تم تحديث بيانات السائق' : 'تم إضافة السائق')
@@ -91,7 +91,7 @@ export default function AdminDrivers() {
 
   const deleteDriver = async (id: string) => {
     if (!confirm('هل أنت متأكد من حذف هذا السائق؟')) return
-    const { error } = await supabase.from('drivers').delete().eq('id', id)
+    const { error } = await apiDb.from('drivers').delete().eq('id', id)
     if (error) { toast.error('فشل الحذف'); return }
     toast.success('تم حذف السائق')
     load()

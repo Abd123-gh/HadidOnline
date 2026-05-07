@@ -1,0 +1,26 @@
+namespace HadidOnline.Application.DTOs;
+
+public record EntityDto(Guid Id, DateTimeOffset CreatedAt);
+public record UpsertVehicleDto(string Name, string Type, string PlateNumber, int Capacity, string? Model, int? Year, bool HasAc, bool HasWifi, bool HasLuggageSpace, string ComfortLevel, string Status, string? ImageUrl, string? Notes, DateOnly? LastMaintenanceDate, DateOnly? NextMaintenanceDate);
+public record VehicleDto(Guid Id, string Name, string Type, string PlateNumber, int Capacity, string? Model, int? Year, bool HasAc, bool HasWifi, bool HasLuggageSpace, string ComfortLevel, string Status, string? ImageUrl, string? Notes, DateOnly? LastMaintenanceDate, DateOnly? NextMaintenanceDate, DateTimeOffset CreatedAt);
+public record UpsertDriverDto(string FullName, string Phone, string? Email, string LicenseNumber, DateOnly LicenseExpiry, string? NationalId, string Status, decimal Rating, int TotalTrips, string? Notes);
+public record DriverDto(Guid Id, string FullName, string Phone, string? Email, string LicenseNumber, DateOnly LicenseExpiry, string Status, decimal Rating, int TotalTrips, string? Notes, DateTimeOffset CreatedAt);
+public record UpsertCustomerDto(string Name, string Type, string Phone, string? Email, string? Address, string? ContactPerson, string? CompanyName, string? TaxNumber, string Status);
+public record CustomerDto(Guid Id, string Name, string Type, string Phone, string? Email, string? Address, string? CompanyName, string Status, DateTimeOffset CreatedAt);
+public record UpsertBookingDto(string ClientName, string ClientPhone, string? ClientEmail, string TripType, string ContractType, string PickupLocation, string Destination, DateOnly TripDate, TimeOnly TripTime, bool ReturnTrip, DateOnly? ReturnDate, TimeOnly? ReturnTime, int Passengers, Guid? VehicleId, Guid? DriverId, string? VehiclePreference, decimal? Price, string? Source, string? Notes);
+public record BookingDto(Guid Id, string BookingNumber, string ClientName, string ClientPhone, string? ClientEmail, string TripType, string ContractType, string Status, string PickupLocation, string Destination, DateOnly TripDate, TimeOnly TripTime, bool ReturnTrip, int Passengers, string? VehiclePreference, decimal? Price, string? Notes, DateTimeOffset CreatedAt);
+public record UpdateStatusDto(string Status);
+public record UpsertTripDto(Guid? BookingId, Guid? ContractId, Guid? VehicleId, Guid? DriverId, Guid? RouteId, string Status, DateOnly ScheduledDate, TimeOnly ScheduledTime, DateTimeOffset? ActualStart, DateTimeOffset? ActualEnd, string PickupLocation, string Destination, int Passengers, string? Notes);
+public record TripDto(Guid Id, Guid? BookingId, Guid? VehicleId, Guid? DriverId, string Status, string PickupLocation, string Destination, DateOnly ScheduledDate, TimeOnly ScheduledTime, DateTimeOffset? ActualStart, DateTimeOffset? ActualEnd, string? Notes, DateTimeOffset CreatedAt);
+public record UpsertContractDto(Guid? CustomerId, Guid? CompanyId, string Type, string Status, DateOnly? StartDate, DateOnly? EndDate, decimal? MonthlyAmount, decimal? TotalAmount, string BillingCycle, string? Terms, string? Notes);
+public record ContractDto(Guid Id, string ContractNumber, Guid? CustomerId, string Type, string Status, DateOnly? StartDate, DateOnly? EndDate, decimal? MonthlyAmount, decimal? TotalAmount, string BillingCycle, string? Notes, DateTimeOffset CreatedAt);
+public record UpsertInvoiceDto(Guid? CustomerId, Guid? BookingId, Guid? ContractId, decimal Amount, decimal TaxAmount, decimal TotalAmount, string Status, DateOnly? DueDate, DateOnly? PaidDate, string? PaymentMethod, string? Notes);
+public record InvoiceDto(Guid Id, string InvoiceNumber, Guid? CustomerId, decimal Amount, decimal TaxAmount, decimal TotalAmount, string Status, DateOnly? DueDate, DateOnly? PaidDate, DateTimeOffset CreatedAt);
+public record UpsertRouteDto(string Name, string? NameAr, string FromLocation, string ToLocation, decimal? DistanceKm, int? EstimatedDurationMinutes, decimal? BasePrice, bool IsActive);
+public record RouteDto(Guid Id, string Name, string? NameAr, string FromLocation, string ToLocation, decimal? DistanceKm, int? EstimatedDurationMinutes, decimal? BasePrice, bool IsActive, DateTimeOffset CreatedAt);
+public record TourPackageDto(Guid Id, string Name, string NameAr, string? Description, string? DescriptionAr, string Destination, int DurationDays, decimal? PricePerPerson, int MinPassengers, int MaxPassengers, string? ImageUrl, bool IsActive, DateTimeOffset CreatedAt);
+public record NotificationDto(Guid Id, string Title, string Message, string Type, string Status, DateTimeOffset CreatedAt);
+public record DashboardStatsDto(int Bookings, int Contracts, int Vehicles, int Customers, int AvailableVehicles, int BusyVehicles, decimal Revenue);
+public record LoginRequestDto(string Email, string Password);
+public record AuthResponseDto(string AccessToken, string RefreshToken, string Email, string FullName, string Role, IReadOnlyList<string> Permissions);
+public record RefreshRequestDto(string RefreshToken);

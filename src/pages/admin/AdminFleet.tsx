@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { supabase, type Vehicle } from '@/lib/supabase'
+import { apiDb, type Vehicle } from '@/lib/api'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
@@ -43,7 +43,7 @@ export default function AdminFleet() {
 
   const load = () => {
     setLoading(true)
-    supabase.from('vehicles').select('*').order('name').then(({ data }) => {
+    apiDb.from('vehicles').select('*').order('name').then(({ data }) => {
       setVehicles(data ?? [])
       setFiltered(data ?? [])
       setLoading(false)
@@ -86,8 +86,8 @@ export default function AdminFleet() {
       status: form.status as Vehicle['status'], notes: form.notes || null,
     }
     const { error } = editId
-      ? await supabase.from('vehicles').update(payload).eq('id', editId)
-      : await supabase.from('vehicles').insert(payload)
+      ? await apiDb.from('vehicles').update(payload).eq('id', editId)
+      : await apiDb.from('vehicles').insert(payload)
     setSaving(false)
     if (error) { toast.error('حدث خطأ: ' + error.message); return }
     toast.success(editId ? 'تم تحديث المركبة' : 'تم إضافة المركبة')
@@ -97,7 +97,7 @@ export default function AdminFleet() {
 
   const deleteVehicle = async (id: string) => {
     if (!confirm('هل أنت متأكد من حذف هذه المركبة؟')) return
-    const { error } = await supabase.from('vehicles').delete().eq('id', id)
+    const { error } = await apiDb.from('vehicles').delete().eq('id', id)
     if (error) { toast.error('فشل الحذف'); return }
     toast.success('تم حذف المركبة')
     load()

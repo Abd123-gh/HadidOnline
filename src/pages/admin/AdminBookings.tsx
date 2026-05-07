@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
-import { supabase, type Booking } from '@/lib/supabase'
+import { apiDb, type Booking } from '@/lib/api'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
@@ -35,7 +35,7 @@ export default function AdminBookings() {
 
   const load = () => {
     setLoading(true)
-    supabase.from('bookings').select('*').order('created_at', { ascending: false }).then(({ data }) => {
+    apiDb.from('bookings').select('*').order('created_at', { ascending: false }).then(({ data }) => {
       setBookings(data ?? [])
       setFiltered(data ?? [])
       setLoading(false)
@@ -57,7 +57,7 @@ export default function AdminBookings() {
 
   const updateStatus = async (id: string, status: string) => {
     setUpdating(true)
-    const { error } = await supabase.from('bookings').update({ status }).eq('id', id)
+    const { error } = await apiDb.from('bookings').update({ status }).eq('id', id)
     setUpdating(false)
     if (error) { toast.error('فشل التحديث'); return }
     toast.success('تم تحديث الحالة')

@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { supabase, type Vehicle } from '@/lib/supabase'
+import { apiDb, type Vehicle } from '@/lib/api'
 import { cn } from '@/lib/utils'
 
 const statusMap: Record<string, { label: string; class: string }> = {
@@ -34,7 +34,7 @@ export default function FleetPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.from('vehicles').select('*').order('name').then(({ data }) => {
+    apiDb.from('vehicles').select('*').order('name').then(({ data }) => {
       setVehicles(data ?? [])
       setFiltered(data ?? [])
       setLoading(false)

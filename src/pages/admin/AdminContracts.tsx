@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { supabase, type Contract } from '@/lib/supabase'
+import { apiDb, type Contract } from '@/lib/api'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
@@ -49,7 +49,7 @@ export default function AdminContracts() {
 
   const load = () => {
     setLoading(true)
-    supabase.from('contracts').select('*').order('created_at', { ascending: false }).then(({ data }) => {
+    apiDb.from('contracts').select('*').order('created_at', { ascending: false }).then(({ data }) => {
       setContracts(data ?? [])
       setFiltered(data ?? [])
       setLoading(false)
@@ -100,8 +100,8 @@ export default function AdminContracts() {
       notes: form.notes || null,
     }
     const { error } = editId
-      ? await supabase.from('contracts').update(payload).eq('id', editId)
-      : await supabase.from('contracts').insert(payload)
+      ? await apiDb.from('contracts').update(payload).eq('id', editId)
+      : await apiDb.from('contracts').insert(payload)
     setSaving(false)
     if (error) { toast.error('حدث خطأ: ' + error.message); return }
     toast.success(editId ? 'تم تحديث العقد' : 'تم إضافة العقد')
@@ -111,7 +111,7 @@ export default function AdminContracts() {
 
   const updateStatus = async (id: string, status: string) => {
     setUpdating(true)
-    const { error } = await supabase.from('contracts').update({ status }).eq('id', id)
+    const { error } = await apiDb.from('contracts').update({ status }).eq('id', id)
     setUpdating(false)
     if (error) { toast.error('فشل التحديث'); return }
     toast.success('تم تحديث حالة العقد')

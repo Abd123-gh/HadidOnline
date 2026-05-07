@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
-import { supabase } from '@/lib/supabase'
+import { apiDb } from '@/lib/api'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
@@ -44,7 +44,7 @@ export default function AdminTrips() {
 
   const load = () => {
     setLoading(true)
-    supabase.from('trips').select('*').order('scheduled_date', { ascending: false }).then(({ data }) => {
+    apiDb.from('trips').select('*').order('scheduled_date', { ascending: false }).then(({ data }) => {
       setTrips((data as Trip[]) ?? [])
       setFiltered((data as Trip[]) ?? [])
       setLoading(false)
@@ -68,7 +68,7 @@ export default function AdminTrips() {
     const updates: Record<string, unknown> = { status }
     if (status === 'in_progress') updates.actual_start = new Date().toISOString()
     if (status === 'completed') updates.actual_end = new Date().toISOString()
-    const { error } = await supabase.from('trips').update(updates).eq('id', id)
+    const { error } = await apiDb.from('trips').update(updates).eq('id', id)
     setUpdating(false)
     if (error) { toast.error('فشل التحديث'); return }
     toast.success('تم تحديث حالة الرحلة')

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { TrendingUp, Users, Truck, FileText, Calendar } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { supabase } from '@/lib/supabase'
+import { apiDb } from '@/lib/api'
 import {
   ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig
 } from '@/components/ui/chart'
@@ -40,10 +40,10 @@ export default function AdminReports() {
 
   useEffect(() => {
     Promise.all([
-      supabase.from('bookings').select('id', { count: 'exact', head: true }),
-      supabase.from('vehicles').select('id', { count: 'exact', head: true }),
-      supabase.from('clients').select('id', { count: 'exact', head: true }),
-      supabase.from('contracts').select('id', { count: 'exact', head: true }),
+      apiDb.from('bookings').select('id', { count: 'exact', head: true }),
+      apiDb.from('vehicles').select('id', { count: 'exact', head: true }),
+      apiDb.from('clients').select('id', { count: 'exact', head: true }),
+      apiDb.from('contracts').select('id', { count: 'exact', head: true }),
     ]).then(([b, v, c, co]) => {
       setCounts({
         bookings: b.count ?? 0,
