@@ -55,12 +55,5 @@ public class ContractsController(IEntityService<Contract> service) : ControllerB
 
     private static void Apply(Contract e, UpsertContractDto d) { e.ContractNumber = string.IsNullOrWhiteSpace(e.ContractNumber) ? $"CT-{DateTime.UtcNow:yyyy}-{Random.Shared.Next(10000,99999)}" : e.ContractNumber; e.CustomerId=d.CustomerId; e.CompanyId=d.CompanyId; e.Type=H.ParseEnum<ContractType>(d.Type); e.Status=H.ParseEnum<ContractStatus>(d.Status); e.StartDate=d.StartDate; e.EndDate=d.EndDate; e.MonthlyAmount=d.MonthlyAmount; e.TotalAmount=d.TotalAmount; e.BillingCycle=H.ParseEnum<ContractBillingCycle>(d.BillingCycle); e.Terms=d.Terms; e.Notes=d.Notes; }
     private static ContractDto ToDto(Contract e) => new ContractDto(e.Id,e.ContractNumber,e.CustomerId,e.Type.ToWire(),e.Status.ToWire(),e.StartDate,e.EndDate,e.MonthlyAmount,e.TotalAmount,e.BillingCycle.ToWire(),e.Notes,e.CreatedAt);
-    private static void SetStatus(Contract e, string status) {
-        if (e is Booking booking) booking.Status = H.ParseEnum<BookingStatus>(status);
-        else if (e is Trip trip) { trip.Status = H.ParseEnum<TripStatus>(status); if (trip.Status == TripStatus.InProgress) trip.ActualStart = DateTimeOffset.UtcNow; if (trip.Status == TripStatus.Completed) trip.ActualEnd = DateTimeOffset.UtcNow; }
-        else if (e is Contract contract) contract.Status = H.ParseEnum<ContractStatus>(status);
-        else if (e is Invoice invoice) invoice.Status = H.ParseEnum<InvoiceStatus>(status);
-        else if (e is Vehicle vehicle) vehicle.Status = H.ParseEnum<VehicleStatus>(status);
-        else if (e is Driver driver) driver.Status = H.ParseEnum<DriverStatus>(status);
-    }
+    private static void SetStatus(Contract e, string status) => e.Status = H.ParseEnum<ContractStatus>(status);
 }

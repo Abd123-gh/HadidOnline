@@ -55,12 +55,5 @@ public class BookingsController(IEntityService<Booking> service) : ControllerBas
 
     private static void Apply(Booking e, UpsertBookingDto d) { e.BookingNumber = string.IsNullOrWhiteSpace(e.BookingNumber) ? $"BK-{DateTime.UtcNow:yyyy}-{Random.Shared.Next(10000,99999)}" : e.BookingNumber; e.ClientName=d.ClientName; e.ClientPhone=d.ClientPhone; e.ClientEmail=d.ClientEmail; e.TripType=H.ParseEnum<BookingTripType>(d.TripType); e.ContractType=H.ParseEnum<ContractBillingCycle>(d.ContractType); e.PickupLocation=d.PickupLocation; e.Destination=d.Destination; e.TripDate=d.TripDate; e.TripTime=d.TripTime; e.ReturnTrip=d.ReturnTrip; e.ReturnDate=d.ReturnDate; e.ReturnTime=d.ReturnTime; e.Passengers=d.Passengers; e.VehicleId=d.VehicleId; e.DriverId=d.DriverId; e.VehiclePreference=d.VehiclePreference; e.Price=d.Price; e.Source=d.Source; e.Notes=d.Notes; }
     private static BookingDto ToDto(Booking e) => new BookingDto(e.Id,e.BookingNumber,e.ClientName,e.ClientPhone,e.ClientEmail,e.TripType.ToWire(),e.ContractType.ToWire(),e.Status.ToWire(),e.PickupLocation,e.Destination,e.TripDate,e.TripTime,e.ReturnTrip,e.Passengers,e.VehiclePreference,e.Price,e.Notes,e.CreatedAt);
-    private static void SetStatus(Booking e, string status) {
-        if (e is Booking booking) booking.Status = H.ParseEnum<BookingStatus>(status);
-        else if (e is Trip trip) { trip.Status = H.ParseEnum<TripStatus>(status); if (trip.Status == TripStatus.InProgress) trip.ActualStart = DateTimeOffset.UtcNow; if (trip.Status == TripStatus.Completed) trip.ActualEnd = DateTimeOffset.UtcNow; }
-        else if (e is Contract contract) contract.Status = H.ParseEnum<ContractStatus>(status);
-        else if (e is Invoice invoice) invoice.Status = H.ParseEnum<InvoiceStatus>(status);
-        else if (e is Vehicle vehicle) vehicle.Status = H.ParseEnum<VehicleStatus>(status);
-        else if (e is Driver driver) driver.Status = H.ParseEnum<DriverStatus>(status);
-    }
+    private static void SetStatus(Booking e, string status) => e.Status = H.ParseEnum<BookingStatus>(status);
 }

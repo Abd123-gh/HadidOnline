@@ -55,12 +55,5 @@ public class InvoicesController(IEntityService<Invoice> service) : ControllerBas
 
     private static void Apply(Invoice e, UpsertInvoiceDto d) { e.InvoiceNumber = string.IsNullOrWhiteSpace(e.InvoiceNumber) ? $"INV-{DateTime.UtcNow:yyyy}-{Random.Shared.Next(10000,99999)}" : e.InvoiceNumber; e.CustomerId=d.CustomerId; e.BookingId=d.BookingId; e.ContractId=d.ContractId; e.Amount=d.Amount; e.TaxAmount=d.TaxAmount; e.TotalAmount=d.TotalAmount; e.Status=H.ParseEnum<InvoiceStatus>(d.Status); e.DueDate=d.DueDate; e.PaidDate=d.PaidDate; e.PaymentMethod=d.PaymentMethod; e.Notes=d.Notes; }
     private static InvoiceDto ToDto(Invoice e) => new InvoiceDto(e.Id,e.InvoiceNumber,e.CustomerId,e.Amount,e.TaxAmount,e.TotalAmount,e.Status.ToWire(),e.DueDate,e.PaidDate,e.CreatedAt);
-    private static void SetStatus(Invoice e, string status) {
-        if (e is Booking booking) booking.Status = H.ParseEnum<BookingStatus>(status);
-        else if (e is Trip trip) { trip.Status = H.ParseEnum<TripStatus>(status); if (trip.Status == TripStatus.InProgress) trip.ActualStart = DateTimeOffset.UtcNow; if (trip.Status == TripStatus.Completed) trip.ActualEnd = DateTimeOffset.UtcNow; }
-        else if (e is Contract contract) contract.Status = H.ParseEnum<ContractStatus>(status);
-        else if (e is Invoice invoice) invoice.Status = H.ParseEnum<InvoiceStatus>(status);
-        else if (e is Vehicle vehicle) vehicle.Status = H.ParseEnum<VehicleStatus>(status);
-        else if (e is Driver driver) driver.Status = H.ParseEnum<DriverStatus>(status);
-    }
+    private static void SetStatus(Invoice e, string status) => e.Status = H.ParseEnum<InvoiceStatus>(status);
 }

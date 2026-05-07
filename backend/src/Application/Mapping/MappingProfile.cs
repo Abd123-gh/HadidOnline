@@ -15,7 +15,7 @@ public class MappingProfile : Profile
         CreateMap<Trip, TripDto>();
         CreateMap<Contract, ContractDto>();
         CreateMap<Invoice, InvoiceDto>();
-        CreateMap<Route, RouteDto>();
+        CreateMap<RouteEntity, RouteDto>();
         CreateMap<TourPackage, TourPackageDto>();
         CreateMap<Notification, NotificationDto>();
     }

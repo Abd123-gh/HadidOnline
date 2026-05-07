@@ -14,7 +14,7 @@ public class Trip : BaseEntity
     public Guid? DriverId { get; set; }
     public Driver? Driver { get; set; }
     public Guid? RouteId { get; set; }
-    public Route? Route { get; set; }
+    public RouteEntity? Route { get; set; }
     public TripStatus Status { get; set; } = TripStatus.Scheduled;
     public DateOnly ScheduledDate { get; set; }
     public TimeOnly ScheduledTime { get; set; }

@@ -55,12 +55,5 @@ public class CustomersController(IEntityService<Customer> service) : ControllerB
 
     private static void Apply(Customer e, UpsertCustomerDto d) { e.Name=d.Name; e.Type=H.ParseEnum<ClientType>(d.Type); e.Phone=d.Phone; e.Email=d.Email; e.Address=d.Address; e.ContactPerson=d.ContactPerson; e.CompanyName=d.CompanyName; e.TaxNumber=d.TaxNumber; e.Status=H.ParseEnum<ClientStatus>(d.Status); }
     private static CustomerDto ToDto(Customer e) => new CustomerDto(e.Id,e.Name,e.Type.ToWire(),e.Phone,e.Email,e.Address,e.CompanyName,e.Status.ToWire(),e.CreatedAt);
-    private static void SetStatus(Customer e, string status) {
-        if (e is Booking booking) booking.Status = H.ParseEnum<BookingStatus>(status);
-        else if (e is Trip trip) { trip.Status = H.ParseEnum<TripStatus>(status); if (trip.Status == TripStatus.InProgress) trip.ActualStart = DateTimeOffset.UtcNow; if (trip.Status == TripStatus.Completed) trip.ActualEnd = DateTimeOffset.UtcNow; }
-        else if (e is Contract contract) contract.Status = H.ParseEnum<ContractStatus>(status);
-        else if (e is Invoice invoice) invoice.Status = H.ParseEnum<InvoiceStatus>(status);
-        else if (e is Vehicle vehicle) vehicle.Status = H.ParseEnum<VehicleStatus>(status);
-        else if (e is Driver driver) driver.Status = H.ParseEnum<DriverStatus>(status);
-    }
+    private static void SetStatus(Customer e, string status) => e.Status = H.ParseEnum<ClientStatus>(status);
 }
