@@ -1,0 +1,4 @@
+@page "/admin/settings"
+@attribute [Authorize]
+@layout AdminLayout
+<section class="admin-page"><div class="page-heading"><div><p class="eyebrow">الإعدادات</p><h1>إعدادات المنصة</h1><span>الهوية، التكامل مع API، الصلاحيات، والإشعارات.</span></div></div><div class="settings-grid"><article class="feature-card"><h3>الهوية</h3><p>الألوان: #0F172A، #2563EB، #F59E0B وشعار H الأحمر المائل.</p></article><article class="feature-card"><h3>المصادقة</h3><p>JWT محفوظ في localStorage مع AuthStateProvider ومسارات محمية.</p></article><article class="feature-card"><h3>واجهة API</h3><p>يتم ضبط ApiBaseUrl من wwwroot/appsettings.json.</p></article></div></section>

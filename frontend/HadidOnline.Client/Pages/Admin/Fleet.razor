@@ -1,0 +1,5 @@
+@page "/admin/fleet"
+@attribute [Authorize]
+@layout AdminLayout
+<AdminCrudPage TItem="VehicleDto" TCreate="UpsertVehicleDto" Endpoint="fleet/vehicles" Title="إدارة الأسطول" Description="المركبات والسعات والتجهيزات ومستويات الراحة." CreateLabel="مركبة جديدة" DefaultStatus="available" Columns="_columns" CreateFactory="NewVehicle"><FormTemplate Context="m"><div class="form-grid"><input class="input" placeholder="اسم المركبة" @bind="m.Name"/><input class="input" placeholder="اللوحة" @bind="m.PlateNumber"/><input class="input" type="number" placeholder="السعة" @bind="m.Capacity"/><input class="input" placeholder="الموديل" @bind="m.Model"/></div></FormTemplate></AdminCrudPage>
+@code{private readonly List<AdminColumn<VehicleDto>> _columns=[new("المركبة",x=>x.Name),new("النوع",x=>x.Type),new("اللوحة",x=>x.PlateNumber),new("السعة",x=>x.Capacity.ToString()),new("الراحة",x=>x.ComfortLevel),new("الحالة",x=>x.Status)]; private static UpsertVehicleDto NewVehicle()=>new("","bus","",45,null,2026,true,true,true,"business","available",null,null,null,null);}

@@ -1,0 +1,5 @@
+@page "/admin/clients"
+@attribute [Authorize]
+@layout AdminLayout
+<AdminCrudPage TItem="CustomerDto" TCreate="UpsertCustomerDto" Endpoint="customers" Title="إدارة العملاء" Description="أفراد، شركات ومدارس مع بيانات تواصل وحالة حساب." CreateLabel="عميل جديد" DefaultStatus="active" Columns="_columns" CreateFactory="NewCustomer"><FormTemplate Context="m"><div class="form-grid"><input class="input" placeholder="الاسم" @bind="m.Name"/><input class="input" placeholder="الجوال" @bind="m.Phone"/><input class="input" placeholder="الشركة" @bind="m.CompanyName"/><input class="input" placeholder="البريد" @bind="m.Email"/></div></FormTemplate></AdminCrudPage>
+@code{private readonly List<AdminColumn<CustomerDto>> _columns=[new("العميل",x=>x.Name),new("النوع",x=>x.Type),new("الجوال",x=>x.Phone),new("الشركة",x=>x.CompanyName??"—"),new("الحالة",x=>x.Status)]; private static UpsertCustomerDto NewCustomer()=>new("","individual","",null,null,null,null,null,"active");}

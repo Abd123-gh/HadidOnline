@@ -1,0 +1,3 @@
+@page "/faq"
+<section class="subhero"><p class="eyebrow">الأسئلة الشائعة</p><h1>إجابات واضحة قبل بدء الرحلة</h1></section><section class="container faq-list section">@foreach(var q in Qs){<details><summary>@q.Q</summary><p>@q.A</p></details>}</section>
+@code{private readonly (string Q,string A)[] Qs=[("هل تدعمون العقود الشهرية؟","نعم، يمكن إنشاء عقود شهرية وسنوية للشركات والمدارس."),("هل المنصة RTL بالكامل؟","نعم، التصميم عربي أولاً مع اتجاه RTL في النماذج والجداول والتنقل."),("كيف يتم تأكيد الحجز؟","بعد إرسال الطلب يراجع فريق التشغيل التفاصيل ويتواصل مع العميل لتأكيد السعر والمركبة.")];}

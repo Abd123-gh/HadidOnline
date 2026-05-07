@@ -1,0 +1,3 @@
+@inject ApiClient Api
+<section class="container section"><div class="cards-3">@if(_packages.Count==0){<article class="feature-card"><h3>باقات سياحية مخصصة</h3><p>تواصل معنا لتصميم مسار سياحي يناسب عدد الركاب والميزانية.</p></article>}else{@foreach(var p in _packages){<article class="feature-card"><h3>@p.NameAr</h3><p>@(p.DescriptionAr ?? p.Destination)</p><b>@p.DurationDays أيام · من @p.PricePerPerson ريال</b></article>}}</div></section>
+@code{private IReadOnlyList<TourPackageDto> _packages=[]; protected override async Task OnInitializedAsync(){try{_packages=(await Api.GetPagedAsync<TourPackageDto>("tour-packages",1,6)).Items;}catch{}}}

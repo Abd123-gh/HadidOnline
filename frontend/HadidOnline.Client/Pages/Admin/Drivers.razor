@@ -1,0 +1,5 @@
+@page "/admin/drivers"
+@attribute [Authorize]
+@layout AdminLayout
+<AdminCrudPage TItem="DriverDto" TCreate="UpsertDriverDto" Endpoint="drivers" Title="إدارة السائقين" Description="السائقون المعتمدون، الرخص، التقييم والحالة التشغيلية." CreateLabel="سائق جديد" DefaultStatus="available" Columns="_columns" CreateFactory="NewDriver"><FormTemplate Context="m"><div class="form-grid"><input class="input" placeholder="الاسم الكامل" @bind="m.FullName"/><input class="input" placeholder="الجوال" @bind="m.Phone"/><input class="input" placeholder="رقم الرخصة" @bind="m.LicenseNumber"/><input class="input" type="date" @bind="m.LicenseExpiry"/></div></FormTemplate></AdminCrudPage>
+@code{private readonly List<AdminColumn<DriverDto>> _columns=[new("السائق",x=>x.FullName),new("الجوال",x=>x.Phone),new("الرخصة",x=>x.LicenseNumber),new("تنتهي",x=>x.LicenseExpiry.ToString()),new("التقييم",x=>x.Rating.ToString("0.0")),new("الحالة",x=>x.Status)]; private static UpsertDriverDto NewDriver()=>new("","",null,"",DateOnly.FromDateTime(DateTime.Today.AddYears(1)),null,"available",5,0,null);}

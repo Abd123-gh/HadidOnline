@@ -1,0 +1,5 @@
+@page "/admin/bookings"
+@attribute [Authorize]
+@layout AdminLayout
+<AdminCrudPage TItem="BookingDto" TCreate="UpsertBookingDto" Endpoint="bookings" Title="إدارة الحجوزات" Description="طلبات النقل الخاصة والسياحية والمؤسسية والمدرسية." CreateLabel="حجز جديد" DefaultStatus="confirmed" Columns="_columns" CreateFactory="NewBooking"><FormTemplate Context="m"><div class="form-grid"><input class="input" placeholder="اسم العميل" @bind="m.ClientName"/><input class="input" placeholder="الجوال" @bind="m.ClientPhone"/><input class="input" placeholder="الانطلاق" @bind="m.PickupLocation"/><input class="input" placeholder="الوجهة" @bind="m.Destination"/></div></FormTemplate></AdminCrudPage>
+@code{private readonly List<AdminColumn<BookingDto>> _columns=[new("رقم الحجز",x=>x.BookingNumber),new("العميل",x=>x.ClientName),new("الجوال",x=>x.ClientPhone),new("المسار",x=>$"{x.PickupLocation} ← {x.Destination}"),new("الحالة",x=>x.Status),new("التاريخ",x=>x.TripDate.ToString())]; private static UpsertBookingDto NewBooking()=>new("","",null,"private","one_time","","",DateOnly.FromDateTime(DateTime.Today.AddDays(1)),new TimeOnly(9,0),false,null,null,1,null,null,null,null,"admin",null);}

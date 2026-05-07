@@ -1,0 +1,7 @@
+@inject ThemeService Theme
+<button class="icon-btn" title="تبديل المظهر" @onclick="Toggle">@(_current == "dark" ? "☀" : "☾")</button>
+@code {
+    private string _current = "light";
+    protected override async Task OnAfterRenderAsync(bool firstRender) { if (firstRender) { _current = await Theme.InitializeAsync(); StateHasChanged(); } }
+    private async Task Toggle() => _current = await Theme.ToggleAsync(_current);
+}

@@ -1,0 +1,62 @@
+@typeparam TItem
+@typeparam TCreate
+@inject ApiClient Api
+@inject ToastService Toasts
+
+<section class="admin-page">
+    <div class="page-heading">
+        <div><p class="eyebrow">@Eyebrow</p><h1>@Title</h1><span>@Description</span></div>
+        <button class="btn primary" @onclick="OpenCreate">+ @CreateLabel</button>
+    </div>
+    <div class="toolbar-card">
+        <input class="input" placeholder="بحث سريع..." @bind="_search" @bind:event="oninput" />
+        <button class="btn ghost" @onclick="Load">تحديث</button>
+    </div>
+    @if (_loading) { <LoadingState Title="جاري تحميل البيانات" /> }
+    else
+    {
+        <div class="data-card">
+            <table class="data-table">
+                <thead><tr>@foreach (var col in Columns) { <th>@col.Header</th> }<th>الإجراءات</th></tr></thead>
+                <tbody>
+                @foreach (var item in FilteredItems)
+                {
+                    <tr>@foreach (var col in Columns) { <td>@col.Value(item)</td> }<td><button class="link-btn" @onclick="() => ChangeStatus(item)">تغيير الحالة</button></td></tr>
+                }
+                </tbody>
+            </table>
+            <div class="table-footer">إجمالي النتائج: @_total</div>
+        </div>
+    }
+    @if (_showForm)
+    {
+        <div class="modal-backdrop" @onclick="CloseForm"><div class="modal-card" @onclick:stopPropagation="true"><h2>@CreateLabel</h2>@FormTemplate(_createModel)<div class="modal-actions"><button class="btn ghost" @onclick="CloseForm">إلغاء</button><button class="btn primary" @onclick="Save">حفظ</button></div></div></div>
+    }
+</section>
+
+@code {
+    [Parameter] public string Endpoint { get; set; } = "";
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string Eyebrow { get; set; } = "إدارة";
+    [Parameter] public string Description { get; set; } = "";
+    [Parameter] public string CreateLabel { get; set; } = "إضافة";
+    [Parameter] public List<AdminColumn<TItem>> Columns { get; set; } = [];
+    [Parameter] public Func<TCreate> CreateFactory { get; set; } = default!;
+    [Parameter] public RenderFragment<TCreate> FormTemplate { get; set; } = default!;
+    [Parameter] public string DefaultStatus { get; set; } = "active";
+
+    private IReadOnlyList<TItem> _items = [];
+    private TCreate _createModel = default!;
+    private bool _loading = true;
+    private bool _showForm;
+    private int _total;
+    private string? _search;
+    private IEnumerable<TItem> FilteredItems => string.IsNullOrWhiteSpace(_search) ? _items : _items.Where(x => string.Join(' ', Columns.Select(c => c.Value(x))).Contains(_search, StringComparison.OrdinalIgnoreCase));
+
+    protected override async Task OnInitializedAsync() => await Load();
+    private async Task Load() { _loading = true; try { var page = await Api.GetPagedAsync<TItem>(Endpoint, 1, 50, _search); _items = page.Items; _total = page.TotalCount; } catch { Toasts.Error("تعذر تحميل البيانات من واجهة API"); } finally { _loading = false; } }
+    private void OpenCreate() { _createModel = CreateFactory(); _showForm = true; }
+    private void CloseForm() => _showForm = false;
+    private async Task Save() { try { await Api.CreateAsync<TItem>(Endpoint, _createModel!); Toasts.Success("تم حفظ السجل بنجاح"); _showForm = false; await Load(); } catch { Toasts.Error("تعذر حفظ السجل، تحقق من الحقول المطلوبة"); } }
+    private async Task ChangeStatus(TItem item) { var id = (Guid?)typeof(TItem).GetProperty("Id")?.GetValue(item); if (id is null) return; try { await Api.UpdateStatusAsync<TItem>(Endpoint, id.Value, DefaultStatus); Toasts.Success("تم تحديث الحالة"); await Load(); } catch { Toasts.Error("تعذر تحديث الحالة"); } }
+}
