@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
-import { supabase, type Client } from '@/lib/supabase'
+import { apiDb, type Client } from '@/lib/api'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
@@ -42,7 +42,7 @@ export default function AdminClients() {
 
   const load = () => {
     setLoading(true)
-    supabase.from('clients').select('*').order('name').then(({ data }) => {
+    apiDb.from('clients').select('*').order('name').then(({ data }) => {
       setClients(data ?? [])
       setFiltered(data ?? [])
       setLoading(false)
@@ -84,8 +84,8 @@ export default function AdminClients() {
       status: form.status as Client['status'],
     }
     const { error } = editId
-      ? await supabase.from('clients').update(payload).eq('id', editId)
-      : await supabase.from('clients').insert(payload)
+      ? await apiDb.from('clients').update(payload).eq('id', editId)
+      : await apiDb.from('clients').insert(payload)
     setSaving(false)
     if (error) { toast.error('حدث خطأ: ' + error.message); return }
     toast.success(editId ? 'تم تحديث العميل' : 'تم إضافة العميل')
@@ -95,7 +95,7 @@ export default function AdminClients() {
 
   const deleteClient = async (id: string) => {
     if (!confirm('هل أنت متأكد من حذف هذا العميل؟')) return
-    const { error } = await supabase.from('clients').delete().eq('id', id)
+    const { error } = await apiDb.from('clients').delete().eq('id', id)
     if (error) { toast.error('فشل الحذف'); return }
     toast.success('تم حذف العميل')
     load()

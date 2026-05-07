@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
-import { supabase, type Invoice } from '@/lib/supabase'
+import { apiDb, type Invoice } from '@/lib/api'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
@@ -28,7 +28,7 @@ export default function AdminInvoices() {
 
   const load = () => {
     setLoading(true)
-    supabase.from('invoices').select('*').order('created_at', { ascending: false }).then(({ data }) => {
+    apiDb.from('invoices').select('*').order('created_at', { ascending: false }).then(({ data }) => {
       setInvoices(data ?? [])
       setFiltered(data ?? [])
       setLoading(false)
@@ -46,7 +46,7 @@ export default function AdminInvoices() {
 
   const markPaid = async (id: string) => {
     setUpdating(true)
-    const { error } = await supabase.from('invoices').update({
+    const { error } = await apiDb.from('invoices').update({
       status: 'paid',
       paid_date: new Date().toISOString().split('T')[0],
     }).eq('id', id)

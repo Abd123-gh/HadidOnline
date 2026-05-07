@@ -4,14 +4,14 @@ import { MapPin, Clock, Users, ArrowLeft, Star } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { supabase, type TourPackage } from '@/lib/supabase'
+import { apiDb, type TourPackage } from '@/lib/api'
 
 export default function ToursPage() {
   const [tours, setTours] = useState<TourPackage[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.from('tour_packages').select('*').eq('is_active', true).then(({ data }) => {
+    apiDb.from('tour_packages').select('*').eq('is_active', true).then(({ data }) => {
       setTours(data ?? [])
       setLoading(false)
     })

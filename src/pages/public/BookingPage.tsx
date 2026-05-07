@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Separator } from '@/components/ui/separator'
-import { supabase } from '@/lib/supabase'
+import { apiDb } from '@/lib/api'
 
 interface FormData {
   client_name: string
@@ -54,7 +54,7 @@ export default function BookingPage() {
       return
     }
     setLoading(true)
-    const { error } = await supabase.from('bookings').insert({
+    const { error } = await apiDb.from('bookings').insert({
       client_name: form.client_name,
       client_phone: form.client_phone,
       client_email: form.client_email || null,

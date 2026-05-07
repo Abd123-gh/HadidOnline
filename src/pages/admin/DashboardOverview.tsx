@@ -3,7 +3,7 @@ import { Calendar, FileText, Truck, Users, TrendingUp, TriangleAlert as AlertTri
 import { Link } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { supabase } from '@/lib/supabase'
+import { apiDb } from '@/lib/api'
 import {
   ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig
 } from '@/components/ui/chart'
@@ -46,10 +46,10 @@ export default function DashboardOverview() {
 
   useEffect(() => {
     Promise.all([
-      supabase.from('bookings').select('id', { count: 'exact', head: true }),
-      supabase.from('contracts').select('id', { count: 'exact', head: true }),
-      supabase.from('vehicles').select('id,status'),
-      supabase.from('clients').select('id', { count: 'exact', head: true }),
+      apiDb.from('bookings').select('id', { count: 'exact', head: true }),
+      apiDb.from('contracts').select('id', { count: 'exact', head: true }),
+      apiDb.from('vehicles').select('id,status'),
+      apiDb.from('clients').select('id', { count: 'exact', head: true }),
     ]).then(([bookings, contracts, vehicles, clients]) => {
       const vData = vehicles.data ?? []
       setCounts({
