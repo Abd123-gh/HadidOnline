@@ -55,12 +55,5 @@ public class VehiclesController(IEntityService<Vehicle> service) : ControllerBas
 
     private static void Apply(Vehicle e, UpsertVehicleDto d) { e.Name=d.Name; e.Type=H.ParseEnum<VehicleType>(d.Type); e.PlateNumber=d.PlateNumber; e.Capacity=d.Capacity; e.Model=d.Model; e.Year=d.Year; e.HasAc=d.HasAc; e.HasWifi=d.HasWifi; e.HasLuggageSpace=d.HasLuggageSpace; e.ComfortLevel=H.ParseEnum<ComfortLevel>(d.ComfortLevel); e.Status=H.ParseEnum<VehicleStatus>(d.Status); e.ImageUrl=d.ImageUrl; e.Notes=d.Notes; e.LastMaintenanceDate=d.LastMaintenanceDate; e.NextMaintenanceDate=d.NextMaintenanceDate; }
     private static VehicleDto ToDto(Vehicle e) => new VehicleDto(e.Id,e.Name,e.Type.ToWire(),e.PlateNumber,e.Capacity,e.Model,e.Year,e.HasAc,e.HasWifi,e.HasLuggageSpace,e.ComfortLevel.ToWire(),e.Status.ToWire(),e.ImageUrl,e.Notes,e.LastMaintenanceDate,e.NextMaintenanceDate,e.CreatedAt);
-    private static void SetStatus(Vehicle e, string status) {
-        if (e is Booking booking) booking.Status = H.ParseEnum<BookingStatus>(status);
-        else if (e is Trip trip) { trip.Status = H.ParseEnum<TripStatus>(status); if (trip.Status == TripStatus.InProgress) trip.ActualStart = DateTimeOffset.UtcNow; if (trip.Status == TripStatus.Completed) trip.ActualEnd = DateTimeOffset.UtcNow; }
-        else if (e is Contract contract) contract.Status = H.ParseEnum<ContractStatus>(status);
-        else if (e is Invoice invoice) invoice.Status = H.ParseEnum<InvoiceStatus>(status);
-        else if (e is Vehicle vehicle) vehicle.Status = H.ParseEnum<VehicleStatus>(status);
-        else if (e is Driver driver) driver.Status = H.ParseEnum<DriverStatus>(status);
-    }
+    private static void SetStatus(Vehicle e, string status) => e.Status = H.ParseEnum<VehicleStatus>(status);
 }

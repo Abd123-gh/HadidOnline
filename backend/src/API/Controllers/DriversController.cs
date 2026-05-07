@@ -55,12 +55,5 @@ public class DriversController(IEntityService<Driver> service) : ControllerBase
 
     private static void Apply(Driver e, UpsertDriverDto d) { e.FullName=d.FullName; e.Phone=d.Phone; e.Email=d.Email; e.LicenseNumber=d.LicenseNumber; e.LicenseExpiry=d.LicenseExpiry; e.NationalId=d.NationalId; e.Status=H.ParseEnum<DriverStatus>(d.Status); e.Rating=d.Rating; e.TotalTrips=d.TotalTrips; e.Notes=d.Notes; }
     private static DriverDto ToDto(Driver e) => new DriverDto(e.Id,e.FullName,e.Phone,e.Email,e.LicenseNumber,e.LicenseExpiry,e.Status.ToWire(),e.Rating,e.TotalTrips,e.Notes,e.CreatedAt);
-    private static void SetStatus(Driver e, string status) {
-        if (e is Booking booking) booking.Status = H.ParseEnum<BookingStatus>(status);
-        else if (e is Trip trip) { trip.Status = H.ParseEnum<TripStatus>(status); if (trip.Status == TripStatus.InProgress) trip.ActualStart = DateTimeOffset.UtcNow; if (trip.Status == TripStatus.Completed) trip.ActualEnd = DateTimeOffset.UtcNow; }
-        else if (e is Contract contract) contract.Status = H.ParseEnum<ContractStatus>(status);
-        else if (e is Invoice invoice) invoice.Status = H.ParseEnum<InvoiceStatus>(status);
-        else if (e is Vehicle vehicle) vehicle.Status = H.ParseEnum<VehicleStatus>(status);
-        else if (e is Driver driver) driver.Status = H.ParseEnum<DriverStatus>(status);
-    }
+    private static void SetStatus(Driver e, string status) => e.Status = H.ParseEnum<DriverStatus>(status);
 }

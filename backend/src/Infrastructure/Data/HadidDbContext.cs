@@ -15,7 +15,7 @@ public class HadidDbContext(DbContextOptions<HadidDbContext> options) : DbContex
     public DbSet<School> Schools => Set<School>();
     public DbSet<Booking> Bookings => Set<Booking>();
     public DbSet<Trip> Trips => Set<Trip>();
-    public DbSet<Route> Routes => Set<Route>();
+    public DbSet<RouteEntity> Routes => Set<RouteEntity>();
     public DbSet<Vehicle> Vehicles => Set<Vehicle>();
     public DbSet<Fleet> Fleets => Set<Fleet>();
     public DbSet<Driver> Drivers => Set<Driver>();

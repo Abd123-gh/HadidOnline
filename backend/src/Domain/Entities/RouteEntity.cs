@@ -1,9 +1,8 @@
 using HadidOnline.Domain.Common;
-using HadidOnline.Domain.Enums;
 
 namespace HadidOnline.Domain.Entities;
 
-public class Route : BaseEntity
+public class RouteEntity : BaseEntity
 {
     public string Name { get; set; } = string.Empty;
     public string? NameAr { get; set; }
