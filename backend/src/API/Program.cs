@@ -1,4 +1,3 @@
-using Asp.Versioning;
 using System.Text.Json.Serialization;
 using FluentValidation.AspNetCore;
 using HadidOnline.API.Middleware;

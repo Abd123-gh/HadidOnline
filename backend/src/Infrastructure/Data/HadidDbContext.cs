@@ -48,6 +48,16 @@ public class HadidDbContext(DbContextOptions<HadidDbContext> options) : DbContex
         modelBuilder.Entity<Trip>().HasIndex(x => new { x.ScheduledDate, x.Status });
         modelBuilder.Entity<Invoice>().HasIndex(x => x.Status);
 
+
+        modelBuilder.Entity<Trip>()
+            .HasOne(x => x.Route)
+            .WithMany()
+            .HasForeignKey(x => x.RouteId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<RouteEntity>()
+            .ToTable("Routes");
+
         modelBuilder.Entity<Role>().HasData(
             new Role { Id = Guid.Parse("10000000-0000-0000-0000-000000000001"), Name = "SuperAdmin", Description = "Full system access" },
             new Role { Id = Guid.Parse("10000000-0000-0000-0000-000000000002"), Name = "Sales", Description = "Sales and contracts" },

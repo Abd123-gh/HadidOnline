@@ -11,7 +11,7 @@ namespace HadidOnline.API.Controllers;
 
 [ApiController]
 [Route("api/v1/bookings")]
-
+[Authorize]
 public class BookingsController(IEntityService<Booking> service) : ControllerBase
 {
     [HttpGet]
