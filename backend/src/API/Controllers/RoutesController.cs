@@ -1,7 +1,7 @@
 using HadidOnline.Application.Common;
 using HadidOnline.Application.DTOs;
 using HadidOnline.Application.Interfaces;
-using HadidOnline.Domain.Entities;
+using DomainRoute = HadidOnline.Domain.Entities.RouteEntity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +10,7 @@ namespace HadidOnline.API.Controllers;
 [ApiController]
 [Route("api/v1/routes")]
 [Authorize]
-public class RoutesController(IEntityService<RouteEntity> service) : ControllerBase
+public class RoutesController(IEntityService<DomainRoute> service) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<ApiEnvelope<PagedResult<RouteDto>>>> List([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 25, [FromQuery] string? search = null, CancellationToken ct = default)
@@ -29,7 +29,7 @@ public class RoutesController(IEntityService<RouteEntity> service) : ControllerB
     [HttpPost]
     public async Task<ActionResult<ApiEnvelope<RouteDto>>> Create(UpsertRouteDto request, CancellationToken ct)
     {
-        var entity = new RouteEntity(); Apply(entity, request);
+        var entity = new DomainRoute(); Apply(entity, request);
         entity = await service.CreateAsync(entity, ct);
         return CreatedAtAction(nameof(Get), new { id = entity.Id }, ApiEnvelope<RouteDto>.Ok(ToDto(entity), "Created"));
     }
@@ -51,7 +51,7 @@ public class RoutesController(IEntityService<RouteEntity> service) : ControllerB
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct) => await service.DeleteAsync(id, ct) ? NoContent() : NotFound(ApiEnvelope<object>.Fail("Not found"));
 
-    private static void Apply(RouteEntity e, UpsertRouteDto d) { e.Name=d.Name; e.NameAr=d.NameAr; e.FromLocation=d.FromLocation; e.ToLocation=d.ToLocation; e.DistanceKm=d.DistanceKm; e.EstimatedDurationMinutes=d.EstimatedDurationMinutes; e.BasePrice=d.BasePrice; e.IsActive=d.IsActive; }
-    private static RouteDto ToDto(RouteEntity e) => new RouteDto(e.Id,e.Name,e.NameAr,e.FromLocation,e.ToLocation,e.DistanceKm,e.EstimatedDurationMinutes,e.BasePrice,e.IsActive,e.CreatedAt);
-    private static void SetStatus(RouteEntity e, string status) => e.IsActive = status.Equals("active", StringComparison.OrdinalIgnoreCase) || status.Equals("true", StringComparison.OrdinalIgnoreCase);
+    private static void Apply(DomainRoute e, UpsertRouteDto d) { e.Name=d.Name; e.NameAr=d.NameAr; e.FromLocation=d.FromLocation; e.ToLocation=d.ToLocation; e.DistanceKm=d.DistanceKm; e.EstimatedDurationMinutes=d.EstimatedDurationMinutes; e.BasePrice=d.BasePrice; e.IsActive=d.IsActive; }
+    private static RouteDto ToDto(DomainRoute e) => new RouteDto(e.Id,e.Name,e.NameAr,e.FromLocation,e.ToLocation,e.DistanceKm,e.EstimatedDurationMinutes,e.BasePrice,e.IsActive,e.CreatedAt);
+    private static void SetStatus(DomainRoute e, string status) => e.IsActive = status.Equals("active", StringComparison.OrdinalIgnoreCase) || status.Equals("true", StringComparison.OrdinalIgnoreCase);
 }
