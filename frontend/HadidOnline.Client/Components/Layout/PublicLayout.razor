@@ -10,7 +10,12 @@
                 <NavLink href="@item.Url" Match="@(item.Url == "/" ? NavLinkMatch.All : NavLinkMatch.Prefix)">@item.Label</NavLink>
             }
         </nav>
-        <div class="nav-actions"><ThemeToggle /><a class="btn ghost" href="/admin">لوحة الإدارة</a><a class="btn primary" href="/booking">احجز الآن</a></div>
+        <div class="nav-actions">
+            <ThemeToggle />
+            <a class="btn ghost" href="https://wa.me/966500000000?text=مرحباً، أريد الاستفسار عن خدمات حديد أونلاين" target="_blank" rel="noopener noreferrer">واتساب</a>
+            <a class="btn ghost" href="tel:+966500000000">920 000 000</a>
+            <a class="btn primary" href="/booking">احجز الآن</a>
+        </div>
     </div>
 </header>
 <main>@Body</main>
@@ -24,5 +29,15 @@
 </footer>
 @code {
     private bool _open;
-    private readonly (string Label, string Url)[] _links = [("الرئيسية", "/"), ("من نحن", "/about"), ("الخدمات", "/services"), ("الأسطول", "/fleet"), ("الرحلات", "/tours"), ("الشركات", "/corporate"), ("المدارس", "/school"), ("الأسئلة", "/faq"), ("تواصل", "/contact")];
+    private readonly (string Label, string Url)[] _links =
+    [
+        ("الرئيسية", "/"),
+        ("خدماتنا", "/services"),
+        ("أسطولنا", "/fleet"),
+        ("الجولات", "/tours"),
+        ("عقود الشركات", "/corporate"),
+        ("نقل المدارس", "/school"),
+        ("من نحن", "/about"),
+        ("تواصل معنا", "/contact")
+    ];
 }
